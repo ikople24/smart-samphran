@@ -57,7 +57,7 @@ export default function AdminPage() {
         ? "http://localhost:3004"
         : "https://express-docker-server-production.up.railway.app";
 
-    const endpoint = isAdminTab ? "/api/admin-options" : "/api/problems";
+    const endpoint = isAdminTab ? "/api/admin-options" : "/api/problem-options";
 
     try {
       const res = await fetch(`${BASE_URL}${endpoint}/${id}`, {
@@ -83,19 +83,26 @@ export default function AdminPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = {
-      label,
-      icon_url: iconUrl,
-      menu_category: category,
-      active: true,
-    };
+     const data = isAdminTab
+      ? {
+          label,
+          icon_url: iconUrl,
+          menu_category: category,
+          active: true,
+        }
+      : {
+          label,
+          iconUrl,
+          category,
+          active: true,
+        };
 
     const BASE_URL =
       process.env.NODE_ENV === "development"
         ? "http://localhost:3004"
         : "https://express-docker-server-production.up.railway.app";
 
-    const endpoint = isAdminTab ? "/api/admin-options" : "/api/problems";
+    const endpoint = isAdminTab ? "/api/admin-options" : "/api/problem-options";
 
     try {
       const res = await fetch(`${BASE_URL}${endpoint}`, {
