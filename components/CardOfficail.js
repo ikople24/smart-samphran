@@ -110,6 +110,7 @@ export default function CardOfficail(props) {
           {showRating && (
             <div className="mt-4 w-full">
               <SatisfactionForm
+                complaintId={props.probId}
                 onSubmit={(data) => {
                   console.log("ส่งความคิดเห็น:", data);
                   setShowRating(false);
