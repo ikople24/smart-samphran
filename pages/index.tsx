@@ -58,7 +58,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white flex flex-col -mt-8 w-full max-w-screen-sm min-w-[320px] mx-auto overflow-x-hidden">
       {/* <h1 className="fixed top-0 left-0 right-0 z-50 bg-white/30 backdrop-blur-md border border-white/40 text-center text-2xl font-semibold text-blue-950 text-shadow-gray-800 shadow-lg py-4">
-        SMART-NAMPHRAE
+        SMART-SAMPRAN
       </h1> */}
       <div className="mt-8 text-center text-xl font-semibold min-h-[1.5rem]">
         <span className={
