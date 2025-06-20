@@ -11,8 +11,9 @@ export default function Home() {
   const texts = useMemo(() => [
     "ร้องทุกข์ - ร้องเรียน",
     "แจ้งเหตุด่วน - รายงานปัญหา",
-    "เทศบาลตำบลน้ำแพร่พัฒนา",
-    "Smart City Award 2024"
+    "เทศบาลเมืองสามพราน",
+    "SMART-SAMPRAN.App",
+    "เขตส่งเสริมเมืองอัจฉริยะ",
   ], []);
   const [displayText, setDisplayText] = useState("");
   const [textIndex, setTextIndex] = useState(0);
