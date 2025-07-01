@@ -13,8 +13,12 @@ export default function Document() {
 
         {/* Social Sharing Meta Tags */}
         <meta property="og:title" content="Smart-Namphare" />
-        <meta property="og:description" content="ระบบร้องทุกข์-ร้องเรียน OpenDataCity" />
+        <meta property="og:description" content="ระบบร้องทุกข์-ร้องเรียน แบบเปิด OpenDataCity" />
         <meta property="og:url" content="https://smart-namphare.app" />
+        <meta property="og:image" content="https://smart-namphare.app/LogoNP.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <body className="antialiased">
