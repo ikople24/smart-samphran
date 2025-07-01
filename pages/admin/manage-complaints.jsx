@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useAuth } from "@clerk/nextjs";
@@ -6,6 +7,10 @@ import useComplaintStore from "@/stores/useComplaintStore";
 import { useMenuStore } from "@/stores/useMenuStore";
 import UpdateAssignmentModal from "@/components/UpdateAssignmentModal"; // สร้าง component นี้แยกต่างหาก
 import EditUserModal from "@/components/EditUserModal";
+
+const LocationPickerModal = dynamic(() => import("@/components/LocationPickerModal"), {
+  ssr: false,
+});
 
 export default function ManageComplaintsPage() {
   const { complaints, fetchComplaints } = useComplaintStore();
