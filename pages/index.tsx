@@ -1,10 +1,34 @@
+type BeforeInstallPromptEvent = Event & {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+};
+
+
 import React, { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { useMenuStore, MenuItem } from "@/stores/useMenuStore";
 import ComplaintFormModal from "@/components/ComplaintFormModal";
 import Footer from "@/components/Footer";
 
+import { Download } from "lucide-react";
+
 export default function Home() {
+
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
+    };
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    };
+  }, []);
+
+
+
   const { menu, fetchMenu, menuLoading } = useMenuStore();
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
 
@@ -104,8 +128,40 @@ export default function Home() {
         {selectedLabel && (
           <ComplaintFormModal selectedLabel={selectedLabel} onClose={handleCloseModal} />
         )}
+        {deferredPrompt && (
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={() => {
+                deferredPrompt?.prompt();
+                deferredPrompt?.userChoice.then(() => setDeferredPrompt(null));
+              }}
+              className="mx-auto relative inline-flex items-center justify-center gap-1 px-5 py-2 rounded-md text-white font-medium group bg-gray-800 rainbow-border"
+            >
+              <span className="relative z-10 flex items-center gap-1">
+                <Download size={16} />
+                ติดตั้งแอป
+              </span>
+            </button>
+          </div>
+        )}
       </div>
       <Footer />
+      <style jsx global>{`
+        @keyframes spin-slow {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 6s linear infinite;
+        }
+        @keyframes spin-slower {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slower {
+          animation: spin-slower 10s linear infinite;
+        }
+      `}</style>
     </div>
   );
 }
