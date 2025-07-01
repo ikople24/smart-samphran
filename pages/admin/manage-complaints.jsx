@@ -20,19 +20,20 @@ export default function ManageComplaintsPage() {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showEditUserModal, setShowEditUserModal] = useState(false);
 
+  const fetchAssignments = async () => {
+    try {
+      const response = await fetch("/api/assignments");
+      const data = await response.json();
+      setAssignments(data);
+    } catch (error) {
+      console.error("Error fetching assignments:", error);
+    }
+  };
+
   useEffect(() => {
     fetchComplaints();
     fetchMenu(); // fetch menu with icons
     // Fetch assignments
-    const fetchAssignments = async () => {
-      try {
-        const response = await fetch("/api/assignments");
-        const data = await response.json();
-        setAssignments(data);
-      } catch (error) {
-        console.error("Error fetching assignments:", error);
-      }
-    };
     fetchAssignments();
   }, [fetchComplaints, fetchMenu]);
 
@@ -76,6 +77,7 @@ export default function ManageComplaintsPage() {
       console.log("Assignment created:", result);
       setAssignmentCreated(true);
       alert("รับงานสำเร็จ");
+      fetchAssignments(); // Refresh the assignments list immediately
     } catch (error) {
       console.error("❌ Error assigning complaint:", error);
       alert("เกิดข้อผิดพลาดในการรับงาน");
@@ -120,6 +122,7 @@ export default function ManageComplaintsPage() {
             <table className="table w-full">
               <thead>
                 <tr>
+                  <th>ลำดับ</th>
                   <th>หมวดหมู่</th>
                   <th>ภาพปัญหา</th>
                   <th>หัวข้อ</th>
@@ -128,13 +131,17 @@ export default function ManageComplaintsPage() {
                 </tr>
               </thead>
               <tbody>
-                {complaints.map((complaint) => {
+                {complaints
+                  .slice()
+                  .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                  .map((complaint, index) => {
                   const isAssigned = assignments.some(
                     (a) => a.complaintId === complaint._id
                   );
                   const isClosed = complaint.status === "ดำเนินการเสร็จสิ้น";
                   return (
                     <tr key={complaint._id}>
+                      <td className="text-center text-sm">{index + 1}</td>
                       <td className="text-center text-sm">
                         <div className="flex flex-col items-center justify-center">
                           {menu.find((m) => m.Prob_name === complaint.category)?.Prob_pic && (
@@ -210,7 +217,34 @@ export default function ManageComplaintsPage() {
                             </button>
                           )
                         ) : (
-                          <span className="text-gray-400 text-xs italic">เรื่องร้องเรียนนี้ถูกปิดแล้ว</span>
+                          <>
+                            <span className="text-gray-400 text-xs italic mr-2">เรื่องร้องเรียนนี้ถูกปิดแล้ว</span>
+                            <button
+                              className="btn btn-error btn-sm"
+                              onClick={() => {
+                                const confirmed = confirm("คุณแน่ใจหรือไม่ว่าต้องการลบเรื่องนี้?");
+                                if (confirmed) {
+                                  fetch(`/api/submittedreports/${complaint._id}`, {
+                                    method: "DELETE",
+                                  })
+                                    .then(async (res) => {
+                                      if (!res.ok) {
+                                        const errorText = await res.text();
+                                        throw new Error(`ลบไม่สำเร็จ: ${errorText}`);
+                                      }
+                                      alert("ลบเรื่องสำเร็จ");
+                                      fetchComplaints();
+                                    })
+                                    .catch((err) => {
+                                      console.error("❌ ลบไม่สำเร็จ:", err);
+                                      alert("เกิดข้อผิดพลาดในการลบ");
+                                    });
+                                }
+                              }}
+                            >
+                              ลบเรื่อง
+                            </button>
+                          </>
                         )}
                       </td>
                     </tr>
