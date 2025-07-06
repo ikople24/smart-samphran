@@ -13,12 +13,12 @@ const StatusPage = () => {
 
   useEffect(() => {
     fetchComplaints("ดำเนินการเสร็จสิ้น").then(() => {
-      console.log("✅ Complaints (done):", complaints);
+      //console.log("✅ Complaints (done):", complaints);
     });
   }, []);
 
   const paginatedComplaints = [...complaints]
-    .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (

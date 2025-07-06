@@ -1,10 +1,35 @@
+type BeforeInstallPromptEvent = Event & {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+};
+
+
 import React, { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { useMenuStore, MenuItem } from "@/stores/useMenuStore";
 import ComplaintFormModal from "@/components/ComplaintFormModal";
 import Footer from "@/components/Footer";
+import SummaryStats from "@/components/SummaryStats";
+
+import { Download } from "lucide-react";
 
 export default function Home() {
+
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
+    };
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    };
+  }, []);
+
+
+
   const { menu, fetchMenu, menuLoading } = useMenuStore();
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
 
@@ -12,7 +37,7 @@ export default function Home() {
     "ร้องทุกข์ - ร้องเรียน",
     "แจ้งเหตุด่วน - รายงานปัญหา",
     "เทศบาลเมืองสามพราน",
-    "SMART-SAMPRAN.App",
+    "smart-samphran",
     "เขตส่งเสริมเมืองอัจฉริยะ",
   ], []);
   const [displayText, setDisplayText] = useState("");
@@ -59,7 +84,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white flex flex-col -mt-8 w-full max-w-screen-sm min-w-[320px] mx-auto overflow-x-hidden">
       {/* <h1 className="fixed top-0 left-0 right-0 z-50 bg-white/30 backdrop-blur-md border border-white/40 text-center text-2xl font-semibold text-blue-950 text-shadow-gray-800 shadow-lg py-4">
-        SMART-SAMPRAN
+        smart-samphran
       </h1> */}
       <div className="mt-8 text-center text-xl font-semibold min-h-[1.5rem]">
         <span className={
@@ -71,6 +96,7 @@ export default function Home() {
         </span>
         <span className="animate-pulse text-indigo-500">|</span>
       </div>
+      <SummaryStats />
       <div className="flex-1 px-4 pt-8 pb-20 w-full max-w-screen-sm mx-auto">
         {menuLoading ? (
           <div className="flex justify-center items-center h-60">
@@ -105,8 +131,40 @@ export default function Home() {
         {selectedLabel && (
           <ComplaintFormModal selectedLabel={selectedLabel} onClose={handleCloseModal} />
         )}
+        {deferredPrompt && (
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={() => {
+                deferredPrompt?.prompt();
+                deferredPrompt?.userChoice.then(() => setDeferredPrompt(null));
+              }}
+              className="mx-auto relative inline-flex items-center justify-center gap-1 px-5 py-2 rounded-md text-white font-medium group bg-gray-800 rainbow-border"
+            >
+              <span className="relative z-10 flex items-center gap-1">
+                <Download size={16} />
+                ติดตั้งแอป
+              </span>
+            </button>
+          </div>
+        )}
       </div>
       <Footer />
+      <style jsx global>{`
+        @keyframes spin-slow {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 6s linear infinite;
+        }
+        @keyframes spin-slower {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slower {
+          animation: spin-slower 10s linear infinite;
+        }
+      `}</style>
     </div>
   );
 }

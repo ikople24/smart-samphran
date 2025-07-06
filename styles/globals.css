@@ -85,4 +85,20 @@ body {
 }
 
 
+@keyframes rainbowBlur {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
+.rainbow-border::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 0.5rem;
+  background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 400% 400%;
+  animation: rainbowBlur 6s ease infinite;
+  z-index: 0;
+  filter: blur(4px);
+}
