@@ -143,7 +143,7 @@ export default function UpdateAssignmentModal({ assignment, onClose }) {
           </div>
           <div className="mb-4">
             <label className="label">
-              <span className="label-text text-sm font-medium text-gray-800">2. อัปโหลดภาพถ่าย</span>
+                  <span className="label-text text-sm font-medium text-red-500">⚠️ อัปโหลดภาพถ่าย อย่างน้อย 1 ภาพก่อนปิดเรื่อง 📷</span>
             </label>
             <ImageUploads
               initialUrls={solutionImages}

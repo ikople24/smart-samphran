@@ -38,6 +38,7 @@ useEffect(() => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return; // Prevent multiple submissions
 
     setValidateTrigger(true);
     await new Promise((resolve) => setTimeout(resolve, 0)); // allow validation effect to run
@@ -121,6 +122,7 @@ useEffect(() => {
     console.log("📤 Payload ส่งไป backend:", payload);
 
     try {
+      setIsSubmitting(true);
       const res = await fetch('/api/submittedreports/submit-report', {
         method: 'POST',
         headers: {
@@ -134,7 +136,6 @@ useEffect(() => {
       const data = await res.json();
       const complaintId = data.complaintId;
 
-      setIsSubmitting(true);
       await new Promise((resolve) => setTimeout(resolve, 4000));
       await Swal.fire({
         icon: 'success',
@@ -153,6 +154,8 @@ useEffect(() => {
         text: err.message || 'ไม่สามารถส่งข้อมูลได้',
         confirmButtonText: 'ตกลง',
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -170,6 +173,7 @@ useEffect(() => {
     setValidateTrigger(false);
     setFormErrors({});
     reporterValidRef.current = true;
+    setIsSubmitting(false);
   };
 
   const handleCommunitySelect = (community) => {
@@ -218,7 +222,7 @@ useEffect(() => {
                   <button
                     key={option._id}
                     type="button"
-                    className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border whitespace-nowrap ${selectedProblems.includes(option._id) ? 'bg-blue-100 text-black border-blue-300' : 'border-gray-300 text-black hover:bg-gray-100'}`}
+                    className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border whitespace-nowrap ${selectedProblems.includes(option._id) ? 'bg-green-500 text-white border-green-300' : 'border-gray-300 text-black hover:bg-gray-100'}`}
                     onClick={() => {
                       setSelectedProblems(prev =>
                         prev.includes(option._id)

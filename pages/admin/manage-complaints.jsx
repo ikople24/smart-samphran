@@ -90,6 +90,12 @@ export default function ManageComplaintsPage() {
   };
 
   const handleCloseComplaint = async (complaintId) => {
+    // Check if assignment for this complaint has completedAt date
+    const assignment = assignments.find((a) => a.complaintId === complaintId);
+    if (!assignment?.completedAt) {
+      alert("ไม่สามารถปิดเรื่องได้: กรุณาระบุวันที่ดำเนินการเสร็จสิ้นในแบบฟอร์มอัปเดต");
+      return;
+    }
     try {
       const res = await fetch(`/api/submittedreports/update-status`, {
         method: "PUT",

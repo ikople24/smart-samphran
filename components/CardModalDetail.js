@@ -1,5 +1,5 @@
 import { Dialog } from "@headlessui/react";
-import { ReceiptText } from "lucide-react";
+import { ReceiptText, Search } from "lucide-react";
 import { useMenuStore } from "@/stores/useMenuStore";
 import { useProblemOptionStore } from "@/stores/useProblemOptionStore";
 import { useEffect, useState } from "react";
@@ -65,9 +65,10 @@ export default function CardModalDetail({ modalData, onClose }) {
                         title="ดูรูปเต็มจอ"
                         onClick={() => setPreviewImg(img)}
                       >
-                        🔍
+                        <Search size={16} />
                       </button>
                     </div>
+                    {modalData.images.length > 1 && (
                     <div className="absolute flex justify-between transform -translate-y-1/2 left-2 right-2 top-1/2 z-10">
                       <button
                         onClick={() =>
@@ -86,6 +87,7 @@ export default function CardModalDetail({ modalData, onClose }) {
                         ❯
                       </button>
                     </div>
+                    )}
                   </div>
                 ))}
               </div>

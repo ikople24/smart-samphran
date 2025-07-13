@@ -34,10 +34,10 @@ export default function Home() {
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
 
   const texts = useMemo(() => [
-    "ร้องทุกข์ - ร้องเรียน",
+    "ระบบบริการ อัจฉริยะ",
     "แจ้งเหตุด่วน - รายงานปัญหา",
     "เทศบาลเมืองสามพราน",
-    "smart-samphran",
+    "SMART-SAMPHRAN",
     "เขตส่งเสริมเมืองอัจฉริยะ",
   ], []);
   const [displayText, setDisplayText] = useState("");

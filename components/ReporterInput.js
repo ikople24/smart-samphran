@@ -48,7 +48,7 @@ const ReporterInput = ({
           {errors.detail && <p className="text-sm text-red-500 text-right ml-2">{errors.detail[0]}</p>}
         </div>
         <textarea
-          className="textarea w-full bg-blue-50 text-blue-900 border-blue-300 placeholder:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="textarea w-full bg-green-50 text-green-900 border-green-300 placeholder:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
           placeholder="เติมเกี่ยวกับปัญหา หรือระบุ บ้านเลขที่ หรือชื่อถนน เพื่อให้เจ้าหน้าที่สามารถตรวจสอบได้ง่ายขึ้น"
           value={detail}
           onChange={(e) => setDetail(e.target.value)}
@@ -65,17 +65,17 @@ const ReporterInput = ({
               <label className="sr-only">คำนำหน้า</label>
             </div>
             <select
-              className="select select-bordered bg-blue-100 text-blue-900 border-blue-300 w-28 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="select select-bordered bg-green-100 text-green-900 border-green-300 w-28 focus:outline-none focus:ring-2 focus:ring-green-500"
               value={prefix}
               onChange={(e) => setPrefix(e.target.value)}
             >
-              <option value="นาย" className="text-blue-700">
+              <option value="นาย" className="text-green-700">
                 นาย
               </option>
-              <option value="นาง" className="text-blue-700">
+              <option value="นาง" className="text-green-700">
                 นาง
               </option>
-              <option value="น.ส." className="text-blue-700">
+              <option value="น.ส." className="text-green-700">
                 น.ส.
               </option>
             </select>
@@ -86,7 +86,7 @@ const ReporterInput = ({
             </div>
             <input
               type="text"
-              className="input input-bordered flex-1 bg-blue-50 text-blue-900 border-blue-300 placeholder:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input input-bordered flex-1 bg-green-50 text-green-900 border-green-300 placeholder:text-green-400 focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="ชื่อ-นามสกุล"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
@@ -100,7 +100,7 @@ const ReporterInput = ({
           {errors.address && <p className="text-sm text-red-500 text-right ml-2">{errors.address[0]}</p>}
         </div>
         <textarea
-          className="textarea w-full bg-blue-50 text-blue-900 border-blue-300 placeholder:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="textarea w-full bg-green-50 text-green-900 border-green-300 placeholder:text-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
           placeholder="ระบุที่อยู่"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
@@ -116,7 +116,7 @@ const ReporterInput = ({
         <div className="relative w-full">
           <input
             type="tel"
-            className="input input-bordered w-full bg-blue-50 text-blue-900 border-blue-300 placeholder:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10 tabular-nums"
+            className="input input-bordered w-full bg-green-50 text-green-900 border-green-300 placeholder:text-green-400 focus:outline-none focus:ring-2 focus:ring-green-500 pl-10 tabular-nums"
             placeholder="ระบุตัวเลข 10 หลัก"
             inputMode="numeric"
             pattern="\d*"
@@ -128,7 +128,7 @@ const ReporterInput = ({
             onInput={(e) => (e.target.value = e.target.value.replace(/\D/g, ""))}
           />
           <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-900 pointer-events-none z-10"
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-green-900 pointer-events-none z-10"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
             fill="#9ca3af"
